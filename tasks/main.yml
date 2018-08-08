@@ -1,0 +1,16 @@
+---
+- name: add certbot repository
+  apt_repository:
+    repo: "ppa:certbot/certbot"
+    state: present
+  register: certbot_repo_added
+
+- name: apt update cache
+  apt:
+    update_cache: yes
+  when: certbot_repo_added.changed
+
+- name: install certbot
+  package:
+    name: letsencrypt
+    state: present
